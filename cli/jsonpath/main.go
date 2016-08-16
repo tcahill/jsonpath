@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/NodePrime/jsonpath"
 	flag "github.com/ogier/pflag"
+	"github.com/tcahill/jsonpath"
 )
 
 func main() {

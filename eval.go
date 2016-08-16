@@ -201,7 +201,7 @@ func pathMatchOp(q *query, e *Eval, i *Item) queryStateFn {
 				if itemMatchOperator(current, i, nextOp) {
 					q.pos += 1
 
-					if nextOp.whereClauseBytes != nil && len(nextOp.whereClause) > 0 {
+					if nextOp.typ == opTypeIndexExpr {
 						bucket := exprBucket{
 							operatorLoc: q.loc(),
 							expression:  nextOp.whereClause,
@@ -326,6 +326,8 @@ func itemMatchOperator(loc interface{}, i *Item, op *operator) bool {
 	} else if isIndex {
 		switch op.typ {
 		case opTypeIndexWild:
+			return true
+		case opTypeIndexExpr:
 			return true
 		case opTypeIndex, opTypeIndexRange:
 			return topInt >= op.indexStart && (!op.hasIndexEnd || topInt <= op.indexEnd)

@@ -15,7 +15,7 @@ var pathTests = []lexTest{
 	{"quoted keys", `$.akey["akey2"].akey3`, []int{pathRoot, pathPeriod, pathKey, pathBracketLeft, pathKey, pathBracketRight, pathPeriod, pathKey, pathEOF}},
 	{"wildcard key", `$.akey.*.akey3`, []int{pathRoot, pathPeriod, pathKey, pathPeriod, pathWildcard, pathPeriod, pathKey, pathEOF}},
 	{"wildcard index", `$.akey[*]`, []int{pathRoot, pathPeriod, pathKey, pathBracketLeft, pathWildcard, pathBracketRight, pathEOF}},
-	{"key with where expression", `$.akey?(@.ten = 5)`, []int{pathRoot, pathPeriod, pathKey, pathWhere, pathExpression, pathEOF}},
+	{"index with filter expression", `$.akey[?(@.ten = 5)]`, []int{pathRoot, pathPeriod, pathKey, pathBracketLeft, pathWhere, pathExpression, pathBracketRight, pathEOF}},
 	{"bracket notation", `$["aKey"][*][32][23:42]`, []int{pathRoot, pathBracketLeft, pathKey, pathBracketRight, pathBracketLeft, pathWildcard, pathBracketRight, pathBracketLeft, pathIndex, pathBracketRight, pathBracketLeft, pathIndex, pathIndexRange, pathIndex, pathBracketRight, pathEOF}},
 }
 

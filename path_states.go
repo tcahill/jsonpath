@@ -69,9 +69,6 @@ func lexPathAfterKey(l lexer, state *intStack) stateFn {
 	case '+':
 		l.emit(pathValue)
 		return lexPathAfterValue
-	case '?':
-		l.emit(pathWhere)
-		return lexPathExpression
 	case eof:
 		l.emit(pathEOF)
 	default:
@@ -83,7 +80,7 @@ func lexPathAfterKey(l lexer, state *intStack) stateFn {
 func lexPathExpression(l lexer, state *intStack) stateFn {
 	cur := l.take()
 	if cur != '(' {
-		return l.errorf("Expected $ at start of path instead of  %#U", cur)
+		return l.errorf("Expected ( at start of path instead of  %#U", cur)
 	}
 
 	parenLeftCount := 1
@@ -103,7 +100,7 @@ func lexPathExpression(l lexer, state *intStack) stateFn {
 		}
 	}
 	l.emit(pathExpression)
-	return lexPathAfterKey
+	return lexPathBracketClose
 }
 
 func lexPathBracketOpen(l lexer, state *intStack) stateFn {
@@ -116,6 +113,10 @@ func lexPathBracketOpen(l lexer, state *intStack) stateFn {
 		l.takeString()
 		l.emit(pathKey)
 		return lexPathBracketClose
+	case '?':
+		l.take()
+		l.emit(pathWhere)
+		return lexPathExpression
 	case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 		l.take()
 		takeDigits(l)

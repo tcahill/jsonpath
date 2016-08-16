@@ -22,6 +22,7 @@ var optests = []optest{
 
 	optest{"double key", `$["aKey"]["bKey"]`, []int{opTypeName, opTypeName}},
 	optest{"double key", `$["aKey"].bKey`, []int{opTypeName, opTypeName}},
+	optest{"whatever", `$.aKey[?(@.foo == "bar")]`, []int{opTypeName, opTypeIndexExpr}},
 }
 
 func TestQueryOperators(t *testing.T) {
